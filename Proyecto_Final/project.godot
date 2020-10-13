@@ -16,6 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="Proyecto Final - PV3 - Amico Pablo"
+run/main_scene="res://Niveles/nivel 1.tscn"
 config/icon="res://icon.png"
 
 [input]
@@ -45,23 +46,23 @@ Mover_Izquierda={
  ]
 }
 Mirar_Derecha={
-"deadzone": 0.2,
-"events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":2,"axis_value":1.0,"script":null)
+"deadzone": 0.5,
+"events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":-1,"axis":2,"axis_value":1.0,"script":null)
  ]
 }
 Mirar_Izquierda={
-"deadzone": 0.2,
-"events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":2,"axis_value":-1.0,"script":null)
+"deadzone": 0.5,
+"events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":-1,"axis":2,"axis_value":-1.0,"script":null)
  ]
 }
 Mirar_Arriba={
-"deadzone": 0.2,
-"events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":3,"axis_value":-1.0,"script":null)
+"deadzone": 0.5,
+"events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":-1,"axis":3,"axis_value":-1.0,"script":null)
  ]
 }
 Mirar_Abajo={
-"deadzone": 0.2,
-"events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":0,"axis":3,"axis_value":1.0,"script":null)
+"deadzone": 0.5,
+"events": [ Object(InputEventJoypadMotion,"resource_local_to_scene":false,"resource_name":"","device":-1,"axis":3,"axis_value":1.0,"script":null)
  ]
 }
 
