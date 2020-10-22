@@ -1,0 +1,48 @@
+[gd_scene load_steps=11 format=2]
+
+[ext_resource path="res://Recursos/Sprites/Personaje/spreetsheet personaje.png" type="Texture" id=1]
+[ext_resource path="res://Recursos/Animation/Player Animation/Flashlight_Idle.tres" type="Animation" id=2]
+[ext_resource path="res://Recursos/Scripts/Player.gd" type="Script" id=3]
+[ext_resource path="res://Recursos/Animation/Player Animation/flshlight_attack.tres" type="Animation" id=4]
+[ext_resource path="res://Recursos/Animation/Player Animation/Flashlight_Move.tres" type="Animation" id=5]
+[ext_resource path="res://Recursos/Animation/Player Animation/knife_idle.tres" type="Animation" id=6]
+[ext_resource path="res://Recursos/Animation/Player Animation/knife_attack.tres" type="Animation" id=7]
+[ext_resource path="res://Recursos/Animation/Player Animation/knife_move.tres" type="Animation" id=8]
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 55.311, 74.7597 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 30.9251, 53.7373 )
+
+[node name="Player" type="KinematicBody2D"]
+position = Vector2( 284.643, 192.145 )
+script = ExtResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="."]
+texture = ExtResource( 1 )
+vframes = 19
+hframes = 19
+frame = 35
+
+[node name="Position2D" type="Position2D" parent="."]
+position = Vector2( 99.2841, -4.68913 )
+
+[node name="collision body" type="CollisionShape2D" parent="."]
+position = Vector2( -45.0651, -0.161335 )
+shape = SubResource( 1 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/Flashlight_Idle = ExtResource( 2 )
+anims/Flashlight_Move = ExtResource( 5 )
+anims/flshlight_attack = ExtResource( 4 )
+anims/knife_attack = ExtResource( 7 )
+anims/knife_idle = ExtResource( 6 )
+anims/knife_move = ExtResource( 8 )
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="hit-melee" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 104.271, -20.1815 )
+shape = SubResource( 2 )
+disabled = true

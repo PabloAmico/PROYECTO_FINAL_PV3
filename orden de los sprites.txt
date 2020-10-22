@@ -1,0 +1,23 @@
+1-20 - knife-idle
+21-35 - knife-attack
+36-55 - knife-move
+56-75 - flashlight-idle
+76-90 - flashlight-Attack
+91-110 - flashlight-move
+111 - 130 - handgun-idle
+131-145 - handgun-meleeattack
+146-165 - handgun-move
+166-180 - handgun-reload
+181-183 - handgun-shoot
+184-203 - rifle-idle
+204-218 - rifle-meleeattack
+219-238 - rifle-Move
+239-258 - rifle-reload
+259-261 - rifle-shoot
+262-281 - shotgun-idle
+282-296 - shotgun-meleeattack
+297-316 - shotgun-move
+317-336 - shotgun-reload
+337-339 - shotgun-shoot
+
+
