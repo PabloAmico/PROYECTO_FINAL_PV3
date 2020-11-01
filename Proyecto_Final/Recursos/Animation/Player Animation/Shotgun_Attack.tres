@@ -1,7 +1,7 @@
 [gd_resource type="Animation" format=2]
 
 [resource]
-resource_name = "flshlight_attack"
+resource_name = "Shotgun_Attack"
 length = 1.5
 tracks/0/type = "value"
 tracks/0/path = NodePath("Sprite:frame")
@@ -13,7 +13,7 @@ tracks/0/keys = {
 "times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.1, 1.2, 1.3, 1.4 ),
 "transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 1,
-"values": [ 76, 77, 78, 79, 80, 81, 82, 83, 84, 85, 86, 87, 88, 89, 90 ]
+"values": [ 281, 282, 283, 284, 285, 286, 287, 288, 289, 290, 291, 292, 293, 294, 295 ]
 }
 tracks/1/type = "value"
 tracks/1/path = NodePath("collision body:position")
@@ -22,10 +22,10 @@ tracks/1/loop_wrap = true
 tracks/1/imported = false
 tracks/1/enabled = true
 tracks/1/keys = {
-"times": PoolRealArray( 0, 0.5, 0.9, 1.3 ),
-"transitions": PoolRealArray( 1, 1, 1, 1 ),
+"times": PoolRealArray( 0, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.9, 1, 1.3, 1.5 ),
+"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
 "update": 0,
-"values": [ Vector2( -73.9727, -3.5934 ), Vector2( -60.5444, 9.24985 ), Vector2( -44.5674, 5.88628 ), Vector2( -70.5587, 9.63208 ) ]
+"values": [ Vector2( -66.9727, 3.4066 ), Vector2( -53.9727, 3.4066 ), Vector2( -38.9727, -6.5934 ), Vector2( -12.306, -16.7601 ), Vector2( -5.27573, -20.9267 ), Vector2( -25.4454, -18.4934 ), Vector2( -55.0596, 1.93993 ), Vector2( -32.0379, 39.3066 ), Vector2( -5.86033, 57.3233 ), Vector2( -58.5278, 2.97326 ), Vector2( -66.9727, 3.4066 ) ]
 }
 tracks/2/type = "value"
 tracks/2/path = NodePath("Area2D/hit-melee:disabled")
@@ -34,20 +34,8 @@ tracks/2/loop_wrap = true
 tracks/2/imported = false
 tracks/2/enabled = true
 tracks/2/keys = {
-"times": PoolRealArray( 0, 0.6, 0.9 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
+"times": PoolRealArray( 0.7, 1 ),
+"transitions": PoolRealArray( 1, 1 ),
 "update": 1,
-"values": [ true, false, true ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("Area2D/hit-melee:position")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0 ),
-"transitions": PoolRealArray( 1 ),
-"update": 0,
-"values": [ Vector2( 84.9303, 0.840897 ) ]
+"values": [ false, true ]
 }

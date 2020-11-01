@@ -5,3 +5,6 @@
 [node name="nivel 1" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource( 1 )]
+Tiene_Pistola = false
+Tiene_Escopeta = false
+Tiene_Rifle = false

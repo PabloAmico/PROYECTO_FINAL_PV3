@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://Recursos/Sprites/Personaje/spreetsheet personaje.png" type="Texture" id=1]
 [ext_resource path="res://Recursos/Animation/Player Animation/Flashlight_Idle.tres" type="Animation" id=2]
@@ -8,11 +8,26 @@
 [ext_resource path="res://Recursos/Animation/Player Animation/knife_idle.tres" type="Animation" id=6]
 [ext_resource path="res://Recursos/Animation/Player Animation/knife_attack.tres" type="Animation" id=7]
 [ext_resource path="res://Recursos/Animation/Player Animation/knife_move.tres" type="Animation" id=8]
+[ext_resource path="res://Recursos/Animation/Player Animation/Pistol_Idle.tres" type="Animation" id=9]
+[ext_resource path="res://Recursos/Animation/Player Animation/Pistol_Move.tres" type="Animation" id=10]
+[ext_resource path="res://Recursos/Animation/Player Animation/Rifle_Reload.tres" type="Animation" id=11]
+[ext_resource path="res://Recursos/Animation/Player Animation/Shotgun_Attack.tres" type="Animation" id=12]
+[ext_resource path="res://Recursos/Animation/Player Animation/Shotgun_Shoot.tres" type="Animation" id=13]
+[ext_resource path="res://Recursos/Animation/Player Animation/Rifle_Move.tres" type="Animation" id=14]
+[ext_resource path="res://Recursos/Animation/Player Animation/Rifle_Idle.tres" type="Animation" id=15]
+[ext_resource path="res://Recursos/Animation/Player Animation/Shotgun_Reload.tres" type="Animation" id=16]
+[ext_resource path="res://Recursos/Animation/Player Animation/Rifle_Attack.tres" type="Animation" id=17]
+[ext_resource path="res://Recursos/Animation/Player Animation/Rifle_Shoot.tres" type="Animation" id=18]
+[ext_resource path="res://Recursos/Animation/Player Animation/Shotgun_Move.tres" type="Animation" id=19]
+[ext_resource path="res://Recursos/Animation/Player Animation/Shotgun_Idle.tres" type="Animation" id=20]
+[ext_resource path="res://Recursos/Animation/Player Animation/Pistol_Attack.tres" type="Animation" id=21]
+[ext_resource path="res://Recursos/Animation/Player Animation/Pistol_Shoot.tres" type="Animation" id=22]
+[ext_resource path="res://Recursos/Animation/Player Animation/Pistol_Reload.tres" type="Animation" id=23]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 55.311, 74.7597 )
 
-[sub_resource type="RectangleShape2D" id=2]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 30.9251, 53.7373 )
 
 [node name="Player" type="KinematicBody2D"]
@@ -23,18 +38,33 @@ script = ExtResource( 3 )
 texture = ExtResource( 1 )
 vframes = 19
 hframes = 19
-frame = 35
+frame = 55
 
 [node name="Position2D" type="Position2D" parent="."]
 position = Vector2( 99.2841, -4.68913 )
 
 [node name="collision body" type="CollisionShape2D" parent="."]
-position = Vector2( -45.0651, -0.161335 )
+position = Vector2( -73.9727, -3.5934 )
 shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 anims/Flashlight_Idle = ExtResource( 2 )
 anims/Flashlight_Move = ExtResource( 5 )
+anims/Pistol_Attack = ExtResource( 21 )
+anims/Pistol_Idle = ExtResource( 9 )
+anims/Pistol_Move = ExtResource( 10 )
+anims/Pistol_Reload = ExtResource( 23 )
+anims/Pistol_Shoot = ExtResource( 22 )
+anims/Rifle_Attack = ExtResource( 17 )
+anims/Rifle_Idle = ExtResource( 15 )
+anims/Rifle_Move = ExtResource( 14 )
+anims/Rifle_Reload = ExtResource( 11 )
+anims/Rifle_Shoot = ExtResource( 18 )
+anims/Shotgun_Attack = ExtResource( 12 )
+anims/Shotgun_Idle = ExtResource( 20 )
+anims/Shotgun_Move = ExtResource( 19 )
+anims/Shotgun_Reload = ExtResource( 16 )
+anims/Shotgun_Shoot = ExtResource( 13 )
 anims/flshlight_attack = ExtResource( 4 )
 anims/knife_attack = ExtResource( 7 )
 anims/knife_idle = ExtResource( 6 )
@@ -43,6 +73,6 @@ anims/knife_move = ExtResource( 8 )
 [node name="Area2D" type="Area2D" parent="."]
 
 [node name="hit-melee" type="CollisionShape2D" parent="Area2D"]
-position = Vector2( 104.271, -20.1815 )
-shape = SubResource( 2 )
-disabled = true
+position = Vector2( 114.271, -3.1815 )
+shape = SubResource( 3 )
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
