@@ -1,10 +1,13 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://Recursos/Escenas_Objetos/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Recursos/Escenas_Objetos/Zombie.tscn" type="PackedScene" id=2]
 
 [node name="nivel 1" type="Node2D"]
 
-[node name="Player" parent="." instance=ExtResource( 1 )]
-Tiene_Pistola = false
-Tiene_Escopeta = false
-Tiene_Rifle = false
+[node name="zombie" parent="." instance=ExtResource( 2 )]
+
+[node name="Player" parent="." groups=[
+"Jugador",
+] instance=ExtResource( 1 )]
+position = Vector2( 284.645, 192.145 )

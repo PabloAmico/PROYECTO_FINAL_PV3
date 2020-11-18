@@ -9,7 +9,9 @@ var rs_look = Vector2()
 var velocity
 
 var Num_Arma_Equipada
-var Animaciones_Idle = ["Flashlight_Idle"]
+
+var target
+
 #Variables booleanas de armas y desarmado
 export var Desarmado = true
 export var Tiene_Pistola = true
@@ -26,13 +28,25 @@ var Arma_Equipada = [Desarmado, Cuchillo_Equipado, Pistola_Equipada, Escopeta_Eq
 
 var Ataque = false
 
+
+#Array de Animaciones
+var Animaciones_Idle = ["Flashlight_Idle", "knife_idle", "Pistol_Idle", "Shotgun_Idle", "Rifle_Idle"]
+var Animaciones_Move = ["Flashlight_Move", "knife_move", "Pistol_Move", "Shotgun_Move", "Rifle_Move"]
+var Animaciones_Attack = ["flshlight_attack", "knife_attack", "Pistol_Shoot", "Shotgun_Shoot", "Rifle_Shoot"]
+var Animaciones_Shoot = [null, null, "Pistol_Shoot", "Shotgun_Shoot", "Rifle_Shoot"]
+var Animaciones_Reload = [null, null, "Pistol_Reload", "Shotgun_Reload", "Rifle_Reload"]
+var Animaciones_MeleeAttack = [null,null,"Pistol_Attack", "Shotgun_Attack", "Rifle_Attack"]
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Armas_Disponibles = [Desarmado, Tiene_Cuchillo, Tiene_Pistola, Tiene_Escopeta, Tiene_Rifle]
 	Num_Arma_Equipada = 0
+	target = true
 	pass # Replace with function body.
 
 func _physics_process(delta):
+	
+	Aim()
 	
 	_joypads()
 	
@@ -50,27 +64,13 @@ func rslook():
 
 
 func _Set_Animations():
-	if Arma_Equipada[0]:
-		if !Ataque:
-			if velocity == Vector2(0,0):
-				$AnimationPlayer.play(Animaciones_Idle[0])
-			else:
-				$AnimationPlayer.play("Flashlight_Move")
+	if !Ataque:
+		if velocity == Vector2(0,0):
+			$AnimationPlayer.play(Animaciones_Idle[Num_Arma_Equipada])
 		else:
-			$AnimationPlayer.play("flshlight_attack")
-			
-	if Arma_Equipada[1]:
-		if !Ataque:
-			if velocity == Vector2(0,0):
-				$AnimationPlayer.play("knife_idle")
-			else:
-				$AnimationPlayer.play("knife_move")
-		else:
-			$AnimationPlayer.play("knife_attack")
-			
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#	pass
+			$AnimationPlayer.play(Animaciones_Move[Num_Arma_Equipada])
+	else:
+		$AnimationPlayer.play(Animaciones_Attack[Num_Arma_Equipada])
 
 func _joypads():
 	velocity = Vector2.ZERO
@@ -80,16 +80,23 @@ func _joypads():
 	
 	if Input.is_action_just_pressed("Atacar"):
 		Ataque = true
+		if(Num_Arma_Equipada > 1):
+			$RayCast2D.enabled = true
 		
 	if Input.is_action_just_pressed("Arma_Siguiente"):
-		Change_Arma_UP()
+		if(!Ataque):
+			Change_Arma_UP()
 	
 	if Input.is_action_just_pressed("Arma_Anterior"):
-		Change_Arma_DOWN()
+		if(!Ataque):
+			Change_Arma_DOWN()
 
 
 func _on_AnimationPlayer_animation_finished(anim_name):
-	Ataque = false
+	if (Num_Arma_Equipada != Armas_Disponibles.size()-1):
+		Ataque = false
+	$RayCast2D.enabled = false
+	target = true
 	pass # Replace with function body.
 
 func Set_Arma_Equipada():
@@ -110,7 +117,7 @@ func Change_Arma_UP():
 		elif(Armas_Disponibles[Num_Arma_Equipada]):
 			Bandera = true
 	Set_Arma_Equipada()
-	
+
 func Change_Arma_DOWN():
 	var Bandera
 	while(!Bandera):
@@ -120,3 +127,11 @@ func Change_Arma_DOWN():
 		elif(Armas_Disponibles[Num_Arma_Equipada]):
 			Bandera = true
 	Set_Arma_Equipada()
+	
+func Aim():
+	if $RayCast2D.is_colliding() && target:
+		target = false
+		print("colisione con algo")
+		var col = $RayCast2D.get_collider()
+		if(col.is_in_group("enemigos")):
+			col.Quitar_Vida()
