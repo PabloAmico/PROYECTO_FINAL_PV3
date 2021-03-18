@@ -20,4 +20,7 @@
 317-336 - shotgun-reload
 337-339 - shotgun-shoot
 
+0-8 - attack
+9 -26
+
 

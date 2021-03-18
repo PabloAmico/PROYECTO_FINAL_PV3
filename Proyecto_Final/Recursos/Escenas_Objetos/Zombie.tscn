@@ -1,7 +1,10 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://Recursos/Sprites/Zombie_1/spreetsheet zombie.png" type="Texture" id=1]
 [ext_resource path="res://Recursos/Scripts/zombie.gd" type="Script" id=2]
+[ext_resource path="res://Recursos/Animation/Zombie Animation/Zombie_Attack.tres" type="Animation" id=3]
+[ext_resource path="res://Recursos/Animation/Zombie Animation/Zombie_Idle.tres" type="Animation" id=4]
+[ext_resource path="res://Recursos/Animation/Zombie Animation/Zombie_Move.tres" type="Animation" id=5]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 76.6859, 81.6498 )
@@ -9,58 +12,7 @@ extents = Vector2( 76.6859, 81.6498 )
 [sub_resource type="RectangleShape2D" id=2]
 extents = Vector2( 77.4111, 81.3283 )
 
-[sub_resource type="Animation" id=3]
-resource_name = "Zombie_Attack"
-tracks/0/type = "value"
-tracks/0/path = NodePath("Sprite:frame_coords")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/keys = {
-"times": PoolRealArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9 ),
-"transitions": PoolRealArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
-"update": 0,
-"values": [ Vector2( 0, 0 ), Vector2( 1, 0 ), Vector2( 2, 0 ), Vector2( 3, 0 ), Vector2( 4, 0 ), Vector2( 5, 0 ), Vector2( 6, 0 ), Vector2( 7, 0 ), Vector2( 8, 0 ), Vector2( 9, 0 ) ]
-}
-tracks/1/type = "value"
-tracks/1/path = NodePath("hit attack/colision attack:disabled")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/keys = {
-"times": PoolRealArray( 0, 0.4, 0.6 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ true, false, true ]
-}
-tracks/2/type = "value"
-tracks/2/path = NodePath("AreaColision/MascaraArea:disabled")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/keys = {
-"times": PoolRealArray( 0, 0.4, 0.6 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ false, true, false ]
-}
-tracks/3/type = "value"
-tracks/3/path = NodePath("MascaraColision:disabled")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/keys = {
-"times": PoolRealArray( 0, 0.4, 0.6 ),
-"transitions": PoolRealArray( 1, 1, 1 ),
-"update": 1,
-"values": [ false, true, false ]
-}
-
-[sub_resource type="RectangleShape2D" id=4]
+[sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 20.8199, 60.227 )
 
 [node name="zombie" type="KinematicBody2D" groups=[
@@ -88,15 +40,20 @@ scale = Vector2( 0.853939, 0.919902 )
 texture = ExtResource( 1 )
 vframes = 2
 hframes = 22
-frame = 6
+frame = 26
 
 [node name="AnimacionZombie" type="AnimationPlayer" parent="."]
-anims/Zombie_Attack = SubResource( 3 )
+anims/Zombie_Attack = ExtResource( 3 )
+anims/Zombie_Idle = ExtResource( 4 )
+anims/Zombie_Move = ExtResource( 5 )
 
 [node name="hit attack" type="Area2D" parent="."]
 
 [node name="colision attack" type="CollisionShape2D" parent="hit attack"]
 position = Vector2( 71, -5 )
-shape = SubResource( 4 )
+shape = SubResource( 3 )
 disabled = true
+
+[node name="Timer_Cambio_Estado" type="Timer" parent="."]
 [connection signal="area_entered" from="AreaColision" to="." method="_on_Area2D_area_entered"]
+[connection signal="timeout" from="Timer_Cambio_Estado" to="." method="_on_Timer_Cambio_Estado_timeout"]
