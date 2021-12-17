@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/damage_3_player.ogg-762e33e48d039f3f27f1d7f4394804c4.oggstr"
+
+[deps]
+
+source_file="res://Recursos/SFX/Player/damage_3_player.ogg"
+dest_files=[ "res://.import/damage_3_player.ogg-762e33e48d039f3f27f1d7f4394804c4.oggstr" ]
+
+[params]
+
+loop=true
+loop_offset=0

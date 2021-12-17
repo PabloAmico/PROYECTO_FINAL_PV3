@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Rifle.ogg-ab2ec64222516d1ae95f851d553ba23d.oggstr"
+
+[deps]
+
+source_file="res://Recursos/SFX/Rifle.ogg"
+dest_files=[ "res://.import/Rifle.ogg-ab2ec64222516d1ae95f851d553ba23d.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

@@ -28,7 +28,7 @@ tracks/1/keys = {
 "values": [ Vector2( -45.0651, -0.161335 ), Vector2( -33.833, 0.419154 ), Vector2( -30.7094, 4.10282 ), Vector2( -29.1475, 3.42197 ), Vector2( -47.7672, 2.74111 ), Vector2( -62.9033, -2.30425 ), Vector2( -56.6936, -33.0292 ), Vector2( -39.9727, -53.5934 ), Vector2( -39.9727, 1.4066 ) ]
 }
 tracks/2/type = "value"
-tracks/2/path = NodePath("Area2D/hit-melee:disabled")
+tracks/2/path = NodePath("hit-area/hit-melee:disabled")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/imported = false
@@ -40,7 +40,7 @@ tracks/2/keys = {
 "values": [ true, false, true ]
 }
 tracks/3/type = "value"
-tracks/3/path = NodePath("Area2D/hit-melee:position")
+tracks/3/path = NodePath("hit-area/hit-melee:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/imported = false

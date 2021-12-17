@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Reload_2seg.ogg-c96342b7e7cf98bce4c28aff93902d09.oggstr"
+
+[deps]
+
+source_file="res://Recursos/SFX/Reload_2seg.ogg"
+dest_files=[ "res://.import/Reload_2seg.ogg-c96342b7e7cf98bce4c28aff93902d09.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

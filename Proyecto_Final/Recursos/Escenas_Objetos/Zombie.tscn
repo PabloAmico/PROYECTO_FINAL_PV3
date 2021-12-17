@@ -63,7 +63,7 @@ scale = Vector2( 90, 90 )
 shape = SubResource( 4 )
 
 [node name="Timer_Cambio_IdlePatrol" type="Timer" parent="."]
-wait_time = 2.0
+wait_time = 5.0
 one_shot = true
 
 [node name="Timer_Cambio_Patrulla" type="Timer" parent="."]
@@ -75,6 +75,7 @@ wait_time = 5.0
 position = Vector2( 0, 1.49831 )
 polygon = PoolVector2Array( 42.568, -4.60934, 1101.23, -464.08, 1085.35, 542.332 )
 
+[connection signal="body_entered" from="hit attack" to="." method="_on_hit_attack_body_entered"]
 [connection signal="body_entered" from="ZonaDeEscucha" to="." method="_on_ZonaDeEscucha_body_entered"]
 [connection signal="body_exited" from="ZonaDeEscucha" to="." method="_on_ZonaDeEscucha_body_exited"]
 [connection signal="body_entered" from="ZonaDeVision" to="." method="_on_ZonaDeVision_body_entered"]

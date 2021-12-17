@@ -19,9 +19,17 @@ tile_data = PoolIntArray( -65538, 1, 0, -65537, 1, 0, -131072, 1, 0, -131070, 0,
 [node name="Walls" parent="LevelNavigation" instance=ExtResource( 4 )]
 position = Vector2( -47.5682, -7.13522 )
 
-[node name="zombie" parent="." instance=ExtResource( 2 )]
-
 [node name="Player" parent="." instance=ExtResource( 1 )]
+Damage_pistol = 15
+Damage_shotgun = 40
+Damage_rifle = 20
+Damage_punch = 20
+Damage_knife = 30
+
+[node name="zombie" parent="." instance=ExtResource( 2 )]
+position = Vector2( 525.886, 209.798 )
+SPEED = 350
+Life = 120
 
 [node name="pared_1" type="StaticBody2D" parent="."]
 position = Vector2( -1656.81, 466.516 )

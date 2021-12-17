@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/Pistol.ogg-fb97798f933dbf423dc13abfef781aa8.oggstr"
+
+[deps]
+
+source_file="res://Recursos/SFX/Pistol.ogg"
+dest_files=[ "res://.import/Pistol.ogg-fb97798f933dbf423dc13abfef781aa8.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

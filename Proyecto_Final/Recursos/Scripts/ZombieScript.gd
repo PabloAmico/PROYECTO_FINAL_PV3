@@ -4,6 +4,8 @@ extends KinematicBody2D
 export(int) var SPEED: int = 40
 export(int) var SPEED_PATROL: int = 40
 
+
+
 export(int) var Life : int = 100
 var velocity: Vector2 = Vector2.ZERO
 
@@ -22,12 +24,21 @@ var assign_patrol = false;
 var in_patrol = 0;
 var assign_Dir = false;
 
+#punch received
+export(bool) var punch_received: bool = false
+var punch_time = 0.3
+var player_punch = null
 
+#stab received
+export(bool) var stun_received: bool = false
+var stun_time = 0.75
 
 func _ready():
-	randomize()
 	yield(get_tree(), "idle_frame")
 	var tree = get_tree()
+	player_punch = get_tree().get_nodes_in_group("Player")[0]
+	randomize()
+	
 	if tree.has_group("LevelNavigation"):
 		levelNavigation = tree.get_nodes_in_group("LevelNavigation")[0]
 	
@@ -46,9 +57,15 @@ func _physics_process(delta):
 		look_at(player.global_position)
 
 	if player and levelNavigation:
-		if player_enter:
+		if player_enter && !punch_received && !stun_received:
 			generate_path()
 			navigate()
+		elif punch_received:
+			player_enter = true
+			Punch_Received(delta)
+		elif stun_received:
+			player_enter = true
+			Stun_Received(delta)
 	
 	idle_Patrol()
 	move()
@@ -67,12 +84,9 @@ func idle_Patrol():
 			assign_Dir = true
 			in_patrol = (randi() % 6) -1
 			assign_patrol = true
-			print("Cambie direccion")
 		pass
 		
 		if assign_patrol && assign_Dir:
-			#print("entre aca")
-			#print(in_patrol)
 			match in_patrol:
 				0: 
 					velocity = Vector2(0,0) * SPEED_PATROL #patrulla quieto
@@ -131,6 +145,8 @@ func Hear_Player():
 func Reduce_Life(var Damage):
 	if(Life > 0):
 		Life -= Damage
+		player_enter = true
+		print("el daño sufrido fue = " + String(Damage))
 		print(Life)
 		if(Life <= 0):
 			Kill_Zombie()
@@ -163,3 +179,24 @@ func _on_ZonaDeVision_body_entered(body:Node):
 	if body.is_in_group("Player"):
 		player_enter = true
 	pass # Replace with function body.
+
+
+func _on_hit_attack_body_entered(body):
+	pass # Replace with function body.
+
+
+func Punch_Received(var dt):
+	if(punch_received):
+		velocity = Vector2((position.x * cos(player_punch.rotation_degrees)*2), (position.y * sin(player_punch.rotation_degrees)*2))
+		punch_time -= dt
+		if(punch_time <= 0):
+			punch_time = 0.3
+			punch_received = false
+
+func Stun_Received(var dt):
+	if stun_received:
+		velocity = Vector2(0,0);
+		stun_time -=dt
+		if(stun_time <= 0):
+			stun_time = 0.75
+			stun_received = false
