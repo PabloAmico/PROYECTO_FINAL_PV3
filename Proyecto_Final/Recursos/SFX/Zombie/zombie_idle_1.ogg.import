@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/zombie_idle_1.ogg-73a92eff7982cdf0514d5c908eeb5f8c.oggstr"
+
+[deps]
+
+source_file="res://Recursos/SFX/Zombie/zombie_idle_1.ogg"
+dest_files=[ "res://.import/zombie_idle_1.ogg-73a92eff7982cdf0514d5c908eeb5f8c.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

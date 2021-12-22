@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/zombie_attack_2.ogg-c911dd1402716994ac166c401ecb377f.oggstr"
+
+[deps]
+
+source_file="res://Recursos/SFX/Zombie/zombie_attack_2.ogg"
+dest_files=[ "res://.import/zombie_attack_2.ogg-c911dd1402716994ac166c401ecb377f.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

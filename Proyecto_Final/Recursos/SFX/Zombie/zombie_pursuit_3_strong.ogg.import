@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/zombie_pursuit_3_strong.ogg-563a2e06667875c97af52408cc4f9725.oggstr"
+
+[deps]
+
+source_file="res://Recursos/SFX/Zombie/zombie_pursuit_3_strong.ogg"
+dest_files=[ "res://.import/zombie_pursuit_3_strong.ogg-563a2e06667875c97af52408cc4f9725.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

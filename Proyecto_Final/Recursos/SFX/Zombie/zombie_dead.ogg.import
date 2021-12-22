@@ -1,0 +1,15 @@
+[remap]
+
+importer="ogg_vorbis"
+type="AudioStreamOGGVorbis"
+path="res://.import/zombie_dead.ogg-f0bdc37bcea158c6ac4e3c012673b552.oggstr"
+
+[deps]
+
+source_file="res://Recursos/SFX/Zombie/zombie_dead.ogg"
+dest_files=[ "res://.import/zombie_dead.ogg-f0bdc37bcea158c6ac4e3c012673b552.oggstr" ]
+
+[params]
+
+loop=false
+loop_offset=0

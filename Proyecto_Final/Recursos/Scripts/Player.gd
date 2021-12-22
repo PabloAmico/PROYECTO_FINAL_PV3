@@ -10,6 +10,8 @@ var deadzone = 0.3
 var rs_look = Vector2()
 var velocity
 
+export var life = 120
+
 var Num_Arma_Equipada
 
 var target
@@ -21,6 +23,8 @@ var cooldown_punch = false
 var cooldown_knife = false
 
 var time_Run = 0
+
+export var is_dead = false
 
 #Variables booleanas de armas y desarmado
 export var Desarmado = true
@@ -356,4 +360,29 @@ func _on_hitarea_body_entered(body):
 			body.Reduce_Life(Damage_knife)
 			body.stun_received = true
 		
-	
+func Reduce_Life(var Damage):
+	if life > 0:
+		life -= Damage
+		Sound_damage()
+		if(life <= 0):
+			Kill_Player()
+	else:
+		Kill_Player()
+
+
+func Sound_damage():
+	var select = (randi() % 4) -1
+	match select:
+		0:
+			$Audio/Damage_1.play()
+		1:
+			$Audio/Damage_2.play()
+		2: 
+			$Audio/Damage_3.play()
+	pass
+
+
+func Kill_Player():
+	is_dead = true
+	$Audio/Death.play()
+	print("Estoy muerto")

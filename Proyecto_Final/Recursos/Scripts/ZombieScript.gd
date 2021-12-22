@@ -5,9 +5,13 @@ export(int) var SPEED: int = 40
 export(int) var SPEED_PATROL: int = 40
 
 
-
 export(int) var Life : int = 100
 var velocity: Vector2 = Vector2.ZERO
+export(int) var damage : int = 30
+
+var cooldown_attack = 1
+var attack = false
+var finish_attack = false
 
 #pathFinding
 var path: Array = []
@@ -17,6 +21,10 @@ var player_hear = null;
 
 var player_enter = false;
 var player_enter_hear = false;
+
+#Player_Attack
+
+var player_zone_Attack = false
 
 #patrol
 
@@ -33,6 +41,13 @@ var player_punch = null
 export(bool) var stun_received: bool = false
 var stun_time = 0.75
 
+#var sounds
+var cooldown_sound_idle = 0
+
+var cooldown_sound_pursuit = 0
+
+var play_sound_Attack = false
+
 func _ready():
 	yield(get_tree(), "idle_frame")
 	var tree = get_tree()
@@ -48,7 +63,16 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+	#print(player_zone_Attack)
 	Hear_Player()
+	if finish_attack:
+		cooldown_attack -= delta
+		if cooldown_attack <= 0:
+			finish_attack = false
+			attack = false
+			cooldown_attack = 1
+			play_sound_Attack = false
+	Control_Sounds(delta)
 	
 
 
@@ -69,6 +93,7 @@ func _physics_process(delta):
 	
 	idle_Patrol()
 	move()
+	Control_Animation()
 
 
 func idle_Patrol():
@@ -156,34 +181,6 @@ func Reduce_Life(var Damage):
 func Kill_Zombie():
 	queue_free()
 
-func _on_ZonaDeEscucha_body_exited(body:Node):
-	if body.is_in_group("Player"):
-		player_hear = null
-		player_enter_hear = false
-	pass # Replace with function body.
-
-func _on_ZonaDeEscucha_body_entered(body:Node):
-	if body.is_in_group("Player"):
-		player_hear = body
-		player_enter_hear = true
-	pass # Replace with function body.
-
-
-
-func _on_ZonaDeVision_body_exited(body:Node):
-	if body.is_in_group("Player"):
-		player_enter = false
-	pass # Replace with function body.
-
-func _on_ZonaDeVision_body_entered(body:Node):
-	if body.is_in_group("Player"):
-		player_enter = true
-	pass # Replace with function body.
-
-
-func _on_hit_attack_body_entered(body):
-	pass # Replace with function body.
-
 
 func Punch_Received(var dt):
 	if(punch_received):
@@ -200,3 +197,145 @@ func Stun_Received(var dt):
 		if(stun_time <= 0):
 			stun_time = 0.75
 			stun_received = false
+
+func Control_Sounds(var delta):
+	cooldown_sound_idle -= delta
+	cooldown_sound_pursuit -= delta
+	if (velocity == Vector2(0,0) || assign_Dir) && !player_enter:
+		if cooldown_sound_idle <= 0:
+			Sound_Idle_or_patrol()
+			cooldown_sound_idle = 7
+	elif player_zone_Attack && !finish_attack && !play_sound_Attack:
+		Sound_Attack()
+		
+	elif player_enter:
+		if cooldown_sound_pursuit <= 0:
+			#print("Reproduje en pursuit")
+			Sound_Pursuit()
+			cooldown_sound_pursuit = 5
+	
+
+func Sound_Idle_or_patrol():
+	var sound = (randi() % 10) - 1
+	match sound:
+		0:
+			$Audio/Idle_1.play()
+		1:
+			$Audio/Idle_2.play()
+		2:
+			$Audio/Idle_3.play()
+		3:
+			$Audio/Idle_4.play()
+		4:
+			$Audio/Idle_5.play()
+		5:
+			$Audio/Idle_6.play()
+		6:
+			$Audio/Idle_7.play()
+		7:
+			var aux = (randi() % 3)
+			if aux == 1:
+				$Audio/Brains_1.play()
+			else:
+				$Audio/Idle_1.play()
+		8:
+			var aux = (randi() % 3)
+			if aux == 1:
+				$Audio/Brains_2.play()
+			else:
+				$Audio/Idle_3.play()
+	pass
+
+func Sound_Pursuit():
+	var sound = (randi() % 5) - 1
+
+	match sound:
+		0:
+			$Audio/Pursuit_1.play()
+		1:
+			$Audio/Pursuit_2.play()
+		2:
+			$Audio/Pursuit_3.play()
+		3:
+			$Audio/Pursuit_4.play()
+	pass
+
+func Sound_Attack():
+	play_sound_Attack = true
+	var sound = (randi() % 4) -1
+	match sound:
+		0:
+			$Audio/Attack_1.play()
+		1:
+			$Audio/Attack_2.play()
+		2:
+			$Audio/Attack_3.play()
+	pass
+			
+
+func Control_Animation():
+	if velocity == Vector2(0,0):
+		$AnimacionZombie.stop()
+	elif player_zone_Attack && !finish_attack:
+		$AnimacionZombie.play("Zombie_Attack")
+		
+	elif assign_Dir:
+		$AnimacionZombie.play("Zombie_Idle")
+	elif player_enter:
+		$AnimacionZombie.play("Zombie_Move")
+	
+func _on_ZonaDeEscucha_body_exited(body:Node):
+	if body.is_in_group("Player"):
+		player_hear = null
+		player_enter_hear = false
+	pass # Replace with function body.
+
+func _on_ZonaDeEscucha_body_entered(body:Node):
+	if body.is_in_group("Player"):
+		player_hear = body
+		player_enter_hear = true
+	pass # Replace with function body.
+
+
+func _on_ZonaDeVision_body_exited(body:Node):
+	if body.is_in_group("Player"):
+		player_enter = false
+	pass # Replace with function body.
+
+func _on_ZonaDeVision_body_entered(body:Node):
+	if body.is_in_group("Player"):
+		player_enter = true
+	pass # Replace with function body.
+
+
+func _on_hit_attack_body_entered(body):
+	if body.is_in_group("Player"):
+		body.Reduce_Life(damage)
+		attack = true
+	pass # Replace with function body.
+
+
+
+func _on_Colision_Con_Jugador_body_entered(body):
+	if body.is_in_group("Player"):
+		if !body.is_dead:
+			player_zone_Attack = true
+			print("Entre")
+		
+		
+
+
+
+func _on_Colision_Con_Jugador_body_exited(body):
+	if body.is_in_group("Player"):
+		player_zone_Attack = false
+		pass
+
+
+
+func _on_AnimacionZombie_animation_finished(anim_name):
+	if anim_name == "Zombie_Attack":
+		finish_attack = true
+		print("termine")
+	pass
+
