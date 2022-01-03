@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=2]
+[gd_scene load_steps=27 format=2]
 
 [ext_resource path="res://Recursos/Sprites/Zombie_1/spreetsheet zombie.png" type="Texture" id=1]
 [ext_resource path="res://Recursos/Scripts/ZombieScript.gd" type="Script" id=2]
@@ -20,6 +20,7 @@
 [ext_resource path="res://Recursos/SFX/Zombie/zombie_attack_3.ogg" type="AudioStream" id=18]
 [ext_resource path="res://Recursos/SFX/Zombie/zombie_attack_2.ogg" type="AudioStream" id=19]
 [ext_resource path="res://Recursos/SFX/Zombie/zombie_brains.ogg" type="AudioStream" id=20]
+[ext_resource path="res://Recursos/Escenas_Objetos/Material/Zombie_material.tres" type="Material" id=21]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 76.6859, 81.6498 )
@@ -53,6 +54,7 @@ position = Vector2( 11.6866, -1.66179 )
 shape = SubResource( 2 )
 
 [node name="Sprite" type="Sprite" parent="."]
+material = ExtResource( 21 )
 position = Vector2( 11, -4 )
 scale = Vector2( 0.853939, 0.919902 )
 texture = ExtResource( 1 )
@@ -173,6 +175,7 @@ max_distance = 4000.0
 volume_db = -9.0
 max_distance = 4000.0
 
+[connection signal="area_entered" from="AreaColision" to="." method="_on_AreaColision_area_entered"]
 [connection signal="animation_finished" from="AnimacionZombie" to="." method="_on_AnimacionZombie_animation_finished"]
 [connection signal="body_entered" from="hit attack" to="." method="_on_hit_attack_body_entered"]
 [connection signal="body_entered" from="ZonaDeEscucha" to="." method="_on_ZonaDeEscucha_body_entered"]

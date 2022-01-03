@@ -5,13 +5,18 @@ export(int) var SPEED: int = 40
 export(int) var SPEED_PATROL: int = 40
 
 
-export(int) var Life : int = 100
+export(int) var life : int = 100
+export(int) var max_life : int = 100
 var velocity: Vector2 = Vector2.ZERO
 export(int) var damage : int = 30
 
 var cooldown_attack = 1
 var attack = false
 var finish_attack = false
+
+var hit = false
+var change_hit = false
+var time_hit = 0.075
 
 #pathFinding
 var path: Array = []
@@ -63,7 +68,6 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-	#print(player_zone_Attack)
 	Hear_Player()
 	if finish_attack:
 		cooldown_attack -= delta
@@ -73,11 +77,25 @@ func _process(delta):
 			cooldown_attack = 1
 			play_sound_Attack = false
 	Control_Sounds(delta)
+
+	if change_hit:
+		if hit:
+			$Sprite.material.set_shader_param("col", 1)
+		else:
+			$Sprite.material.set_shader_param("col", 0)
 	
+	if hit:
+		time_hit -= delta
+		print(time_hit)
+		if time_hit <= 0:
+			time_hit = 0.075
+			hit = false
+			change_hit = true
 
 
 func _physics_process(delta):
-	if player_enter:
+	if player_enter && player != null:
+		#yield(get_tree(), "idle_frame")
 		look_at(player.global_position)
 
 	if player and levelNavigation:
@@ -168,14 +186,25 @@ func Hear_Player():
 
 
 func Reduce_Life(var Damage):
-	if(Life > 0):
-		Life -= Damage
+	if(life > 0):
+		
+		hit = true
+		change_hit = true
+		life -= Damage
 		player_enter = true
 		print("el daño sufrido fue = " + String(Damage))
-		print(Life)
-		if(Life <= 0):
+		print(life)
+		if life > 0:
+			var aux = get_tree().get_nodes_in_group("HealtBar")[1]
+			aux._on_target_health(name)
+
+		if(life <= 0):
+			var aux = get_tree().get_nodes_in_group("HealtBar")[1]
+			aux.target = null
 			Kill_Zombie()
 	else:
+		var aux = get_tree().get_nodes_in_group("HealtBar")[1]
+		aux.target = null
 		Kill_Zombie()
 	
 func Kill_Zombie():
@@ -310,7 +339,7 @@ func _on_ZonaDeVision_body_entered(body:Node):
 
 func _on_hit_attack_body_entered(body):
 	if body.is_in_group("Player"):
-		body.Reduce_Life(damage)
+		body.Reduce_life(damage)
 		attack = true
 	pass # Replace with function body.
 
@@ -323,8 +352,6 @@ func _on_Colision_Con_Jugador_body_entered(body):
 			print("Entre")
 		
 		
-
-
 
 func _on_Colision_Con_Jugador_body_exited(body):
 	if body.is_in_group("Player"):
@@ -339,3 +366,9 @@ func _on_AnimacionZombie_animation_finished(anim_name):
 		print("termine")
 	pass
 
+
+
+func _on_AreaColision_area_entered(area):
+	if area.is_in_group("Player"):
+		player_enter = true
+	pass # Replace with function body.

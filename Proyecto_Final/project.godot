@@ -22,6 +22,7 @@ config/icon="res://icon.png"
 
 window/size/width=1920
 window/size/height=1080
+window/size/resizable=false
 
 [input]
 
@@ -92,6 +93,11 @@ Arma_Anterior={
 Correr={
 "deadzone": 0.5,
 "events": [ Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":4,"pressure":0.0,"pressed":false,"script":null)
+ ]
+}
+Recargar={
+"deadzone": 0.5,
+"events": [ Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":2,"pressure":0.0,"pressed":false,"script":null)
  ]
 }
 

@@ -10,7 +10,9 @@ var deadzone = 0.3
 var rs_look = Vector2()
 var velocity
 
-export var life = 120
+export(int) var life : int = 120
+
+export(int) var max_life : int = 120
 
 var Num_Arma_Equipada
 
@@ -25,6 +27,8 @@ var cooldown_knife = false
 var time_Run = 0
 
 export var is_dead = false
+
+var attack_melee = false
 
 #Variables booleanas de armas y desarmado
 export var Desarmado = true
@@ -101,6 +105,9 @@ var time_trigger = 0
 
 var time_less_dispersion = 1
 
+#Particula
+
+
 #////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -112,9 +119,9 @@ func _ready():
 	$RayCast2D.enabled = false
 	damage_weapons = [null, null, Damage_pistol, Damage_shotgun, Damage_rifle]
 	cant_max_weapons = [null,null, cant_max_bullet_pistol, cant_max_bullet_shotgun, cant_max_bullet_rifle]
-	bullets_current_weapons = [null, null, bullets_current_pistol, bullets_current_shotgun, bullets_current_rifle]
-	bullets_in_magazine_weapons = [null, null, bullets_in_magazine_pistol, bullets_in_magazine_shotgun, bullets_in_magazine_rifle]
-	max_magazine_weapons = [null, null, max_magazine_pistol, max_magazine_shotgun, max_magazine_rifle]
+	bullets_current_weapons = [null, null, bullets_current_pistol, bullets_current_shotgun, bullets_current_rifle] #
+	bullets_in_magazine_weapons = [null, null, bullets_in_magazine_pistol, bullets_in_magazine_shotgun, bullets_in_magazine_rifle] #balas que tiene el cargador
+	max_magazine_weapons = [null, null, max_magazine_pistol, max_magazine_shotgun, max_magazine_rifle]	#Cantidad maxima de balas por cargador
 	pass
 
 func _process(delta):
@@ -124,11 +131,18 @@ func _process(delta):
 			time_less_dispersion = 1;
 			disp_Rifle = false
 			$RayCast2D.rotation_degrees = 270
+			$Laser/Raycast_Laser.rotation_degrees =270
 			time_trigger = 0
 		pass
 
 func _physics_process(delta):
 	
+	if Num_Arma_Equipada > 1:
+		$Laser.visible = true
+		
+	else:
+		$Laser.visible = false
+
 	Aim()
 	
 	_joypads()
@@ -156,7 +170,7 @@ func rslook():
 
 
 func _Set_Animations():
-	if !Ataque && !reloading:
+	if !Ataque && !reloading && !attack_melee:
 		if velocity == Vector2(0,0):
 			$AnimationPlayer.play(Animaciones_Idle[Num_Arma_Equipada])
 		else:
@@ -165,6 +179,8 @@ func _Set_Animations():
 		$AnimationPlayer.play(Animaciones_Attack[Num_Arma_Equipada])
 	elif reloading && Num_Arma_Equipada > 1:
 		$AnimationPlayer.play(Animaciones_Reload[Num_Arma_Equipada])
+	elif attack_melee:
+		$AnimationPlayer.play(Animaciones_MeleeAttack[Num_Arma_Equipada])
 		
 	
 
@@ -173,6 +189,10 @@ func _joypads():
 	Move_Dir.x = -Input.get_action_strength("Mover_Izquierda") + Input.get_action_strength("Mover_Derecha")
 	Move_Dir.y = -Input.get_action_strength("Mover_Arriba") + Input.get_action_strength("Mover_Abajo")
 	rslook() #Movimiento en circulo del personaje.
+	
+	if Input.is_action_just_pressed("Recargar"):
+		if max_magazine_weapons[Num_Arma_Equipada] > bullets_in_magazine_weapons[Num_Arma_Equipada]:
+			Reload()
 	
 	if Input.is_action_just_pressed("Atacar"):
 		if Num_Arma_Equipada != 4:
@@ -218,10 +238,11 @@ func _joypads():
 		if(Num_Arma_Equipada == 4):
 			disp_Rifle = true
 		
-	if Input.is_action_just_released("Correr"):
-		pass
 
-	
+	if Input.is_action_just_pressed("Ataque_melee"):
+		print("Ataque")
+		attack_melee = true
+		pass
 	
 	#if Input.action_release("Atacar"):
 		
@@ -259,6 +280,9 @@ func _on_AnimationPlayer_animation_finished(anim_name):
 	
 	if anim_name == Animaciones_Attack[1]:
 		cooldown_knife = false
+
+	if anim_name == Animaciones_MeleeAttack[Num_Arma_Equipada]:
+		attack_melee = false
 	pass # Replace with function body.
 
 func Set_Arma_Equipada():
@@ -296,12 +320,25 @@ func Aim():
 		target = false
 		var col = $RayCast2D.get_collider()
 		if(col.is_in_group("enemigos")):
+			Particles(true)
 			if(Num_Arma_Equipada == 3):
 				var distancia = position.distance_to(col.position)
 				col.Reduce_Life(Dispersion_Shotgun(distancia))
 			else:
 				col.Reduce_Life(damage_weapons[Num_Arma_Equipada])
+		else:
+			Particles(false)
+			pass
 
+func Particles(var hit):	#Si es verdadero emite la particula de sangre. si es falso emite la de colicion con objetos
+	var position_shoot = $RayCast2D.get_collision_point()
+	if hit:
+		$Particula_Sangre.global_position = position_shoot
+		$Particula_Sangre.restart()
+		
+	else:
+		$Particula_Disparo.global_position = position_shoot
+		$Particula_Disparo.restart()
 
 func Reload():
 	if !reloading && bullets_current_weapons[Num_Arma_Equipada] > 0:
@@ -331,23 +368,27 @@ func Check_Magazine():
 		Reload()
 
 func Dispersion_Shotgun(var distancia):
-	
-	if distancia < 600:
+	if distancia < 400:
+		return damage_weapons[3] * 4
+	elif distancia >= 400 && distancia < 750:
 		return damage_weapons[3]
-	elif distancia >= 600 && distancia <= 900:
+	elif distancia >= 750 && distancia <= 1000:
 		return int(damage_weapons[3] / rand_range(1,2.5))
-	elif distancia > 900:
+	elif distancia > 1000:
 		return int(damage_weapons[3] / rand_range(3,5))
 
 func Dispersion_Rifle(var time_press):
 	disp_Rifle = false
 	if(dispersion_change):
 		$RayCast2D.rotation_degrees -= time_press
+		$Laser/Raycast_Laser.rotation_degrees -= time_press
 		dispersion_change = false
 	else:
 		$RayCast2D.rotation_degrees  += time_press
+		$Laser/Raycast_Laser.rotation_degrees += time_press
 		dispersion_change = true
 	pass
+	
 
 
 
@@ -359,8 +400,12 @@ func _on_hitarea_body_entered(body):
 		elif Num_Arma_Equipada == 1:
 			body.Reduce_Life(Damage_knife)
 			body.stun_received = true
-		
-func Reduce_Life(var Damage):
+		elif attack_melee:
+			body.Reduce_Life(30)
+			body.punch_received = true
+
+			
+func Reduce_life(var Damage):
 	if life > 0:
 		life -= Damage
 		Sound_damage()
@@ -386,3 +431,4 @@ func Kill_Player():
 	is_dead = true
 	$Audio/Death.play()
 	print("Estoy muerto")
+
