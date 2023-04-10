@@ -142,9 +142,9 @@ color = Color( 0.866667, 0.160784, 0.160784, 1 )
 light_mask = 2
 position = Vector2( 284.643, 192.145 )
 script = ExtResource( 3 )
-Damage_pistol = 15
+Damage_pistol = 13
 Damage_shotgun = 30
-Damage_rifle = 20
+Damage_rifle = 16
 Damage_punch = 15
 Damage_knife = 20
 

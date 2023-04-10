@@ -43,7 +43,7 @@ tracks/0/keys = {
 script = ExtResource( 4 )
 SPEED = 275
 SPEED_PATROL = 150
-damage = 20
+damage = 23
 MAX_cooldown_attack = 0.75
 
 [node name="Area2D" type="Area2D" parent="."]

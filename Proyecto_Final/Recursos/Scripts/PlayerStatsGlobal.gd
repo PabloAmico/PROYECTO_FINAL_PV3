@@ -118,7 +118,7 @@ func Save_Data():
 func Load_Data():
 	var _load = File.new() 
 	if(!_load.file_exists("user://Save/data.save")):
-		print("No hay partidas guardadas")
+
 		return
 	_load.open("user://Save/data.save", File.READ);
 
