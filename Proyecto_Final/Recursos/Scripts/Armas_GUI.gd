@@ -42,18 +42,18 @@ func _on_change_weapon():
 			Shotgun.visible = false
 			Text.visible = true
 			
-			Text.text = String(player.bullets_in_magazine_weapons[2]) + " / " + (String(player.bullets_current_weapons[2]))
+			Text.text = String(PlayerStatsGlobal.bullets_in_magazine_weapons[2]) + " / " + (String(PlayerStatsGlobal.bullets_current_weapons[2]))
 			
 		3:
 			Pistol.visible = false
 			Rifle.visible = false
 			Shotgun.visible = true
 			Text.visible = true
-			Text.text = String(player.bullets_in_magazine_weapons[3]) + " / " + (String(player.bullets_current_weapons[3]))
+			Text.text = String(PlayerStatsGlobal.bullets_in_magazine_weapons[3]) + " / " + (String(PlayerStatsGlobal.bullets_current_weapons[3]))
 		
 		4:
 			Pistol.visible = false
 			Rifle.visible = true
 			Shotgun.visible = false
 			Text.visible = true
-			Text.text = String(player.bullets_in_magazine_weapons[4]) + " / " + (String(player.bullets_current_weapons[4]))
+			Text.text = String(PlayerStatsGlobal.bullets_in_magazine_weapons[4]) + " / " + (String(PlayerStatsGlobal.bullets_current_weapons[4]))

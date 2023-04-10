@@ -142,18 +142,23 @@ color = Color( 0.866667, 0.160784, 0.160784, 1 )
 light_mask = 2
 position = Vector2( 284.643, 192.145 )
 script = ExtResource( 3 )
+Damage_pistol = 15
+Damage_shotgun = 30
+Damage_rifle = 20
+Damage_punch = 15
+Damage_knife = 20
 
 [node name="Sprite" type="Sprite" parent="."]
 texture = ExtResource( 1 )
 hframes = 19
 vframes = 19
-frame = 110
+frame = 180
 
 [node name="Position2D" type="Position2D" parent="."]
 position = Vector2( 99.2841, -4.68913 )
 
 [node name="collision body" type="CollisionShape2D" parent="."]
-position = Vector2( -36.9727, 1.4066 )
+position = Vector2( -60.4798, -4.3871 )
 shape = SubResource( 1 )
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
@@ -241,7 +246,7 @@ stream = ExtResource( 33 )
 [node name="Death" type="AudioStreamPlayer" parent="Audio"]
 stream = ExtResource( 34 )
 
-[node name="Sound_Shoot" type="Area2D" parent="." groups=["Player"]]
+[node name="Sound_Shoot" type="Area2D" parent="." groups=["Player_Sound"]]
 
 [node name="Collision_sound" type="CollisionShape2D" parent="Sound_Shoot"]
 position = Vector2( -40.7126, 0.667419 )
@@ -280,7 +285,7 @@ cast_to = Vector2( 0, 1500 )
 
 [node name="Line2D" type="Line2D" parent="Laser"]
 position = Vector2( 14.8325, 2.11893 )
-default_color = Color( 0.941176, 0.0862745, 0.184314, 1 )
+default_color = Color( 0.0862745, 0.239216, 0.941176, 1 )
 
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="body_entered" from="hit-area" to="." method="_on_hitarea_body_entered"]

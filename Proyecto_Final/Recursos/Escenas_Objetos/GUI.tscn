@@ -1,0 +1,178 @@
+[gd_scene load_steps=15 format=2]
+
+[ext_resource path="res://Recursos/Escenas_Objetos/Material/Weapons.tres" type="Material" id=1]
+[ext_resource path="res://Recursos/Sprites/GUI/GUN_01_[square_frame]_01_V1.00.png" type="Texture" id=2]
+[ext_resource path="res://Recursos/Sprites/GUI/[design] Assault_rifle_V1.00.png" type="Texture" id=3]
+[ext_resource path="res://Recursos/Sprites/GUI/[design]Shotgun_V1.02.png" type="Texture" id=4]
+[ext_resource path="res://Recursos/Escenas_Objetos/HealtBar.tscn" type="PackedScene" id=5]
+[ext_resource path="res://Recursos/Scripts/Armas_GUI.gd" type="Script" id=6]
+[ext_resource path="res://Recursos/Scripts/volver a jugar.gd" type="Script" id=7]
+[ext_resource path="res://Recursos/Scripts/Menu_Principal.gd" type="Script" id=8]
+[ext_resource path="res://Recursos/Scripts/GUI.gd" type="Script" id=9]
+[ext_resource path="res://Recursos/Fuentes/Kenney Future Narrow.ttf" type="DynamicFontData" id=10]
+
+[sub_resource type="DynamicFont" id=2]
+size = 120
+font_data = ExtResource( 10 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 40
+font_data = ExtResource( 10 )
+
+[sub_resource type="DynamicFont" id=1]
+size = 25
+font_data = ExtResource( 10 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 40
+font_data = ExtResource( 10 )
+
+[node name="CanvasLayer" type="CanvasLayer" groups=["Canvas"]]
+pause_mode = 2
+script = ExtResource( 9 )
+
+[node name="control_guns" type="Node2D" parent="."]
+script = ExtResource( 6 )
+
+[node name="Rifle" type="Sprite" parent="control_guns"]
+material = ExtResource( 1 )
+position = Vector2( 1665, 190 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 3 )
+
+[node name="Shotgun" type="Sprite" parent="control_guns"]
+material = ExtResource( 1 )
+position = Vector2( 1645.28, 176.649 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 4 )
+
+[node name="Pistol" type="Sprite" parent="control_guns"]
+material = ExtResource( 1 )
+position = Vector2( 1706.01, 180.808 )
+scale = Vector2( 2, 2 )
+texture = ExtResource( 2 )
+
+[node name="Label" type="Label" parent="control_guns"]
+margin_left = 1760.84
+margin_top = 168.522
+margin_right = 1800.84
+margin_bottom = 182.522
+rect_scale = Vector2( 2.5, 2.5 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HealtBarPlayer" parent="." instance=ExtResource( 5 )]
+margin_left = 1600.0
+margin_top = 11.0
+margin_right = 57.0015
+margin_bottom = -1015.0
+rect_scale = Vector2( 0.75, 0.75 )
+target_player = true
+
+[node name="HealtBarEnemy" parent="." instance=ExtResource( 5 )]
+margin_left = 1600.0
+margin_top = 85.0
+margin_right = 57.0
+margin_bottom = -941.0
+rect_scale = Vector2( 0.75, 0.75 )
+
+[node name="ColorRect" type="ColorRect" parent="."]
+visible = false
+margin_right = 1920.0
+margin_bottom = 1080.0
+color = Color( 0.25098, 0.12549, 0.12549, 0.631373 )
+
+[node name="Titulo" type="Label" parent="ColorRect"]
+margin_left = 548.0
+margin_top = 412.0
+margin_right = 1383.0
+margin_bottom = 547.0
+custom_fonts/font = SubResource( 2 )
+text = "HAS MUERTO!"
+align = 1
+valign = 1
+
+[node name="volver a jugar" type="Button" parent="ColorRect"]
+margin_left = 700.0
+margin_top = 800.0
+margin_right = 818.0
+margin_bottom = 850.0
+text = "VOLVER A JUGAR"
+script = ExtResource( 7 )
+
+[node name="Menu Principal" type="Button" parent="ColorRect"]
+margin_left = 1100.0
+margin_top = 800.0
+margin_right = 1223.0
+margin_bottom = 850.0
+text = "MENU PRINCIPAL"
+script = ExtResource( 8 )
+
+[node name="Label" type="Label" parent="ColorRect"]
+margin_left = 147.0
+margin_top = 664.0
+margin_right = 1810.0
+margin_bottom = 709.0
+custom_fonts/font = SubResource( 3 )
+text = "PRESIONA START PARA VOLVER A JUGAR O CUADRADO / X PARA VOVLER AL MENU"
+
+[node name="Menu Pause" type="ColorRect" parent="."]
+visible = false
+margin_right = 1920.0
+margin_bottom = 1080.0
+color = Color( 0.0392157, 0.0392157, 0.0392157, 0.803922 )
+
+[node name="Label" type="Label" parent="Menu Pause"]
+margin_right = 2312.0
+margin_bottom = 861.0
+rect_scale = Vector2( 0.82572, 1.18593 )
+custom_fonts/font = SubResource( 1 )
+text = "COMO JUGAR.
+
+EL OBJETIVO DEL JUEGO ES LLEGAR AL SEGUNDO NIVEL PARA ACABAR CON LA HORDA DE ZOMBIES QUE AMENAZAN EL PATIO CENTRAL DE LA INSTALACION EN LA QUE TE ENCUENTRAS.
+PARA ELLO DEBERAS RECORRER UN PRIMER NIVEL RECOGIENDO ARMAS Y LLAVES QUE TE SERVIRAN PARA LLEGAR A DESTINO.
+
+CONTROLES:
+
+STICK IZQUIERDO: MOVERSE
+STICK DERECHO: GIRAR
+R1 / RB: ATACAR (CON O SIN ARMA).
+L1 / LB: CORRER.
+R2 / RT: ARMA SIGUIENTE.
+L2 / LT : ARMA ANTERIOR.
+CUADRADO / X: RECARGAR ARMA.
+R3: GOLPE CUERPO A CUERPO (SOLO CON ARMAS).
+PRESIONE START PARA VOLVER AL JUEGO.
+
+AYUDA: 
+LAS ARMAS SE ENCUENTRAN DISPERSAS POR LOS NIVELES.
+LOS ENEMIGOS AL MORIR SUELTAN MEDICINAS O BALAS DEL ARMA QUE UTILIZASTE.
+LAS PUERTAS SE ABREN CON LAS LLAVES DE SUS RESPECTIVOS COLORES.
+LAS PUERTAS BLANCAS NO NECESITAN LLAVES.
+EL CORRER Y DISPARAR ALERTA A LOS ENEMIGOS SI SE ENCUENTRAN CERCA.
+AL MORIR COMIENZAS AL PRINCIPIO DEL NIVEL, PERO CONSERVAS LAS ARMAS.
+
+PRESIONA START PARA CONTINUAR
+"
+align = 1
+valign = 1
+autowrap = true
+
+[node name="Waves" type="Label" parent="."]
+visible = false
+margin_left = 927.0
+margin_top = 3.0
+margin_right = 1039.0
+margin_bottom = 48.0
+custom_fonts/font = SubResource( 4 )
+text = "hola"
+
+[node name="Remaining" type="Label" parent="."]
+visible = false
+margin_left = 328.0
+margin_top = 2.0
+margin_right = 440.0
+margin_bottom = 47.0
+custom_fonts/font = SubResource( 4 )
+text = "hola"

@@ -15,14 +15,21 @@ _global_script_class_icons={
 [application]
 
 config/name="Proyecto Final - PV3 - Amico Pablo"
-run/main_scene="res://Niveles/nivel 1.tscn"
+run/main_scene="res://Niveles/Main Menu.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+PlayerStatsGlobal="*res://Recursos/Scripts/PlayerStatsGlobal.gd"
 
 [display]
 
 window/size/width=1920
 window/size/height=1080
-window/size/resizable=false
+window/size/always_on_top=true
+window/size/test_width=1024
+window/size/test_height=768
+window/stretch/mode="viewport"
 
 [input]
 
@@ -100,6 +107,11 @@ Recargar={
 "events": [ Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":2,"pressure":0.0,"pressed":false,"script":null)
  ]
 }
+Start={
+"deadzone": 0.5,
+"events": [ Object(InputEventJoypadButton,"resource_local_to_scene":false,"resource_name":"","device":0,"button_index":11,"pressure":0.0,"pressed":false,"script":null)
+ ]
+}
 
 [layer_names]
 
@@ -115,4 +127,5 @@ Recargar={
 
 [rendering]
 
+environment/default_clear_color=Color( 0, 0, 0, 1 )
 environment/default_environment="res://default_env.tres"

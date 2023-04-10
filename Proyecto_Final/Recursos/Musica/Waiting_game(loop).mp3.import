@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Waiting_game(loop).mp3-4a94afc1177b3c3348a3dc3c18652b6c.mp3str"
+
+[deps]
+
+source_file="res://Recursos/Musica/Waiting_game(loop).mp3"
+dest_files=[ "res://.import/Waiting_game(loop).mp3-4a94afc1177b3c3348a3dc3c18652b6c.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

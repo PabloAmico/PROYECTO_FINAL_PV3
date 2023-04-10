@@ -1,7 +1,20 @@
 [gd_resource type="ShaderMaterial" load_steps=2 format=2]
 
-[ext_resource path="res://Recursos/Escenas_Objetos/Material/zombie_shader.tres" type="Shader" id=1]
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+
+uniform int col = 0;
+
+void fragment(){
+	vec4 arr[2];
+	
+	vec4 color_original = texture(TEXTURE,UV);
+	vec4 rojo = vec4(0.9,0.0,0.0,1.0);
+	arr[0] = color_original;
+	arr[1] = color_original * rojo;
+	COLOR = arr[col];
+}"
 
 [resource]
-shader = ExtResource( 1 )
+shader = SubResource( 1 )
 shader_param/col = 0

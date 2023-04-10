@@ -10,16 +10,18 @@ export var target_player = false
 
 func _ready():
 	if target_player:
-		target = get_tree().get_nodes_in_group("Player")[0]
-		#print(target.name)
+		target = PlayerStatsGlobal
+		
+		
 		_on_max_health_updated()
 	else:
 		health_bar.tint_progress = Color(0.5,0.129,0.160, 1)
 	pass # Replace with function body.
 
 func _on_health_updated():
-	#print(target)
+	
 	if target != null:
+		
 		if target.life <= 0:
 			self.visible = false
 		else:

@@ -10,6 +10,7 @@ export(int) var max_life : int = 100
 var velocity: Vector2 = Vector2.ZERO
 export(int) var damage : int = 30
 
+
 var cooldown_attack = 1
 var attack = false
 var finish_attack = false
@@ -26,6 +27,8 @@ var player_hear = null;
 
 var player_enter = false;
 var player_enter_hear = false;
+var player_enter_vision = false;
+var player_enter_shoot = false;
 
 #Player_Attack
 
@@ -53,6 +56,16 @@ var cooldown_sound_pursuit = 0
 
 var play_sound_Attack = false
 
+var Level = 1;
+var Control = null;
+
+#materials
+var material_zombie = load("res://Recursos/Escenas_Objetos/Material/Zombie_material.tres")
+
+#Instanciar objetos
+var obj_Prefab = load("res://Recursos/Escenas_Objetos/ItemsAndGuns.tscn")
+var obj_Instance = null;
+
 func _ready():
 	yield(get_tree(), "idle_frame")
 	var tree = get_tree()
@@ -65,10 +78,14 @@ func _ready():
 	if tree.has_group("Player"):
 		player = tree.get_nodes_in_group("Player")[0]
 
+	if tree.has_group("Control"):
+		Control = tree.get_nodes_in_group("Control")[0]
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	Hear_Player()
+	Vision_Player()
+	Hear_Shoot_Player()
 	if finish_attack:
 		cooldown_attack -= delta
 		if cooldown_attack <= 0:
@@ -80,13 +97,15 @@ func _process(delta):
 
 	if change_hit:
 		if hit:
+			$Sprite.set_material(material_zombie)
 			$Sprite.material.set_shader_param("col", 1)
-		else:
+		elif $Sprite.get_material() != null:
+			
 			$Sprite.material.set_shader_param("col", 0)
+			$Sprite.set_material(null)
 	
 	if hit:
 		time_hit -= delta
-		print(time_hit)
 		if time_hit <= 0:
 			time_hit = 0.075
 			hit = false
@@ -95,7 +114,6 @@ func _process(delta):
 
 func _physics_process(delta):
 	if player_enter && player != null:
-		#yield(get_tree(), "idle_frame")
 		look_at(player.global_position)
 
 	if player and levelNavigation:
@@ -166,16 +184,12 @@ func navigate():
 
 			if global_position == path[0]:
 				path.pop_front()
-	
-
 
 func generate_path():
-
 	if levelNavigation != null and player != null:
 		path = levelNavigation.get_simple_path(global_position, player.global_position, false)
 	
 func move():
-	
 		velocity = move_and_slide(velocity)
 
 func Hear_Player():
@@ -184,16 +198,20 @@ func Hear_Player():
 			player_enter = true
 	pass
 
+func Vision_Player():
+	if player_enter_vision :
+		player_enter = true
+
+func Hear_Shoot_Player():
+	if player_enter_shoot:
+		player_enter = true
 
 func Reduce_Life(var Damage):
 	if(life > 0):
-		
 		hit = true
 		change_hit = true
 		life -= Damage
 		player_enter = true
-		print("el daño sufrido fue = " + String(Damage))
-		print(life)
 		if life > 0:
 			var aux = get_tree().get_nodes_in_group("HealtBar")[1]
 			aux._on_target_health(name)
@@ -206,18 +224,57 @@ func Reduce_Life(var Damage):
 		var aux = get_tree().get_nodes_in_group("HealtBar")[1]
 		aux.target = null
 		Kill_Zombie()
-	
+
+
+func Drop_Object():
+	if player != null:
+		if PlayerStatsGlobal.life <= PlayerStatsGlobal.max_life / 2:
+			var numRandom = (randi()%10) + 1
+			if(numRandom > 4):
+				obj_Instance = obj_Prefab.instance()
+				get_parent().add_child(obj_Instance);
+				obj_Instance.Set_Integer(0);	#Asigno vida.
+				obj_Instance.global_position = self.global_position;
+			elif player.Num_Arma_Equipada > 1:
+				obj_Instance = obj_Prefab.instance()
+				get_parent().add_child(obj_Instance);
+				obj_Instance.Set_Integer(player.Num_Arma_Equipada);
+				obj_Instance.global_position = self.global_position;
+		elif PlayerStatsGlobal.life < PlayerStatsGlobal.max_life:
+				var numRandom = (randi()%10) + 1
+				if(numRandom > 8):
+					obj_Instance = obj_Prefab.instance()
+					get_parent().add_child(obj_Instance);
+					obj_Instance.Set_Integer(0);	#Asigno vida.
+					obj_Instance.global_position = self.global_position;
+				elif player.Num_Arma_Equipada > 1:
+					obj_Instance = obj_Prefab.instance()
+					get_parent().add_child(obj_Instance);
+					obj_Instance.Set_Integer(player.Num_Arma_Equipada);
+					obj_Instance.global_position = self.global_position;
+		else:
+			if player.Num_Arma_Equipada > 1:
+				obj_Instance = obj_Prefab.instance()
+				get_parent().add_child(obj_Instance);
+				obj_Instance.Set_Integer(player.Num_Arma_Equipada);
+				obj_Instance.global_position = self.global_position;		
+
 func Kill_Zombie():
+	Drop_Object();
+	if(Level == 2):
+		Control.enemies.erase(self)
 	queue_free()
 
 
 func Punch_Received(var dt):
 	if(punch_received):
-		velocity = Vector2((position.x * cos(player_punch.rotation_degrees)*2), (position.y * sin(player_punch.rotation_degrees)*2))
+		velocity = Vector2((position.x * cos(player_punch.rotation_degrees)*1.1), (position.y * sin(player_punch.rotation_degrees)*1.1))
 		punch_time -= dt
 		if(punch_time <= 0):
 			punch_time = 0.3
 			punch_received = false
+
+
 
 func Stun_Received(var dt):
 	if stun_received:
@@ -227,25 +284,27 @@ func Stun_Received(var dt):
 			stun_time = 0.75
 			stun_received = false
 
+
+
 func Control_Sounds(var delta):
 	cooldown_sound_idle -= delta
 	cooldown_sound_pursuit -= delta
 	if (velocity == Vector2(0,0) || assign_Dir) && !player_enter:
 		if cooldown_sound_idle <= 0:
 			Sound_Idle_or_patrol()
-			cooldown_sound_idle = 7
+			cooldown_sound_idle = randf() * 3;
 	elif player_zone_Attack && !finish_attack && !play_sound_Attack:
 		Sound_Attack()
 		
 	elif player_enter:
 		if cooldown_sound_pursuit <= 0:
-			#print("Reproduje en pursuit")
 			Sound_Pursuit()
 			cooldown_sound_pursuit = 5
 	
 
+
 func Sound_Idle_or_patrol():
-	var sound = (randi() % 10) - 1
+	var sound = (randi() % 9)
 	match sound:
 		0:
 			$Audio/Idle_1.play()
@@ -326,15 +385,20 @@ func _on_ZonaDeEscucha_body_entered(body:Node):
 	pass # Replace with function body.
 
 
+
 func _on_ZonaDeVision_body_exited(body:Node):
 	if body.is_in_group("Player"):
 		player_enter = false
+		player_enter_vision = false
 	pass # Replace with function body.
+
+
 
 func _on_ZonaDeVision_body_entered(body:Node):
 	if body.is_in_group("Player"):
-		player_enter = true
+		player_enter_vision = true
 	pass # Replace with function body.
+
 
 
 func _on_hit_attack_body_entered(body):
@@ -349,7 +413,7 @@ func _on_Colision_Con_Jugador_body_entered(body):
 	if body.is_in_group("Player"):
 		if !body.is_dead:
 			player_zone_Attack = true
-			print("Entre")
+			
 		
 		
 
@@ -363,7 +427,6 @@ func _on_Colision_Con_Jugador_body_exited(body):
 func _on_AnimacionZombie_animation_finished(anim_name):
 	if anim_name == "Zombie_Attack":
 		finish_attack = true
-		print("termine")
 	pass
 
 
@@ -372,3 +435,18 @@ func _on_AreaColision_area_entered(area):
 	if area.is_in_group("Player"):
 		player_enter = true
 	pass # Replace with function body.
+
+	if area.is_in_group("Player_Sound"):
+		player_enter_shoot = true
+		pass
+
+
+
+
+func _on_AreaColision_area_exited(area):
+	if area.is_in_group("Player_Sound"):
+		player_enter_shoot = false
+		
+	pass # Replace with function body.
+
+

@@ -1,0 +1,15 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+path="res://.import/Storm(loop) - dark - heavy - lurking.mp3-d792d045c0000fd72c7b6b61047d5b4f.mp3str"
+
+[deps]
+
+source_file="res://Recursos/Musica/Storm(loop) - dark - heavy - lurking.mp3"
+dest_files=[ "res://.import/Storm(loop) - dark - heavy - lurking.mp3-d792d045c0000fd72c7b6b61047d5b4f.mp3str" ]
+
+[params]
+
+loop=true
+loop_offset=0

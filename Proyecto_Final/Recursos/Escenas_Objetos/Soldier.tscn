@@ -1,0 +1,134 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://Recursos/Sprites/Personaje/spreetsheet personaje.png" type="Texture" id=1]
+[ext_resource path="res://Recursos/Animation/Soldier/SOLDIER_Rifle__Shoot.tres" type="Animation" id=2]
+[ext_resource path="res://Recursos/Animation/Soldier/SOLDIER_Shotgun_Idle.tres" type="Animation" id=3]
+[ext_resource path="res://Recursos/Scripts/Soldier.gd" type="Script" id=4]
+[ext_resource path="res://Recursos/Animation/Soldier/SOLDIER_Shotgun_Move.tres" type="Animation" id=5]
+[ext_resource path="res://Recursos/Animation/Soldier/SOLDIER_Rifle_Reload.tres" type="Animation" id=6]
+[ext_resource path="res://Recursos/Animation/Soldier/SOLDIER_Pistol_Idle.tres" type="Animation" id=7]
+[ext_resource path="res://Recursos/Animation/Soldier/SOLDIER_Pistol_Shoot.tres" type="Animation" id=8]
+[ext_resource path="res://Recursos/Animation/Soldier/SOLDIER_Rifle_Idle.tres" type="Animation" id=9]
+[ext_resource path="res://Recursos/Animation/Soldier/SOLDIER_Pistol_Move.tres" type="Animation" id=10]
+[ext_resource path="res://Recursos/Animation/Soldier/SOLDIER_Pistol_Reload.tres" type="Animation" id=11]
+[ext_resource path="res://Recursos/Animation/Soldier/SOLDIER_Rifle_Move.tres" type="Animation" id=12]
+[ext_resource path="res://Recursos/Animation/Soldier/SOLDIER_Shotgun_Shoot.tres" type="Animation" id=13]
+[ext_resource path="res://Recursos/Animation/Soldier/SOLDIER_Shotgun_Reload.tres" type="Animation" id=14]
+[ext_resource path="res://Recursos/Escenas_Objetos/Laser.gd" type="Script" id=15]
+
+[sub_resource type="RectangleShape2D" id=5]
+extents = Vector2( 13.4952, 10 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 13.3811, 10.519 )
+
+[sub_resource type="Animation" id=3]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/path = NodePath("Collision Body:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0 ),
+"transitions": PoolRealArray( 1 ),
+"update": 0,
+"values": [ Vector2( -43.161, -2.24 ) ]
+}
+
+[sub_resource type="CircleShape2D" id=4]
+
+[node name="Soldier" type="KinematicBody2D" groups=["enemigos"]]
+script = ExtResource( 4 )
+SPEED = 275
+SPEED_PATROL = 150
+damage = 20
+MAX_cooldown_attack = 0.75
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( -20.9205, 0 )
+scale = Vector2( 6.182, 7.409 )
+shape = SubResource( 5 )
+
+[node name="Sprite" type="Sprite" parent="."]
+modulate = Color( 0.635294, 0.227451, 0.227451, 1 )
+texture = ExtResource( 1 )
+hframes = 19
+vframes = 19
+frame = 113
+
+[node name="Collision Body" type="CollisionShape2D" parent="."]
+position = Vector2( -43.161, -2.24 )
+scale = Vector2( 6.18221, 7.40947 )
+shape = SubResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+anims/RESET = SubResource( 3 )
+anims/SOLDIER_Pistol_Idle = ExtResource( 7 )
+anims/SOLDIER_Pistol_Move = ExtResource( 10 )
+anims/SOLDIER_Pistol_Reload = ExtResource( 11 )
+anims/SOLDIER_Pistol_Shoot = ExtResource( 8 )
+anims/SOLDIER_Rifle_Idle = ExtResource( 9 )
+anims/SOLDIER_Rifle_Move = ExtResource( 12 )
+anims/SOLDIER_Rifle_Reload = ExtResource( 6 )
+anims/SOLDIER_Rifle__Shoot = ExtResource( 2 )
+anims/SOLDIER_Shotgun_Idle = ExtResource( 3 )
+anims/SOLDIER_Shotgun_Move = ExtResource( 5 )
+anims/SOLDIER_Shotgun_Reload = ExtResource( 14 )
+anims/SOLDIER_Shotgun_Shoot = ExtResource( 13 )
+
+[node name="RayCast2D" type="RayCast2D" parent="."]
+visible = false
+position = Vector2( 100, 38 )
+rotation = 4.71239
+enabled = true
+cast_to = Vector2( 0, 1300 )
+
+[node name="Zona_De_Escucha" type="Area2D" parent="."]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Zona_De_Escucha"]
+visible = false
+scale = Vector2( 98, 98 )
+shape = SubResource( 4 )
+
+[node name="Zona_De_Vision" type="Area2D" parent="."]
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Zona_De_Vision"]
+position = Vector2( 0, 0.5 )
+scale = Vector2( 1.06089, 1 )
+polygon = PoolVector2Array( 42.568, -4.609, 1250, -615.816, 1250, 659.014 )
+
+[node name="Timer_Cambio_IdlePatrol" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+
+[node name="check_visibility" type="Node2D" parent="."]
+
+[node name="RayCast2D" type="RayCast2D" parent="check_visibility"]
+enabled = true
+cast_to = Vector2( 1500, 0 )
+
+[node name="Laser" type="Node2D" parent="."]
+script = ExtResource( 15 )
+
+[node name="Raycast_Laser" type="RayCast2D" parent="Laser"]
+position = Vector2( 115, 38 )
+rotation = 4.71239
+enabled = true
+cast_to = Vector2( 0, 1500 )
+
+[node name="Line2D" type="Line2D" parent="Laser"]
+position = Vector2( 14.8325, 2.11893 )
+default_color = Color( 0.941176, 0.0862745, 0.184314, 1 )
+
+[connection signal="area_entered" from="Area2D" to="." method="_on_Area2D_area_entered"]
+[connection signal="area_exited" from="Area2D" to="." method="_on_Area2D_area_exited"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
+[connection signal="body_entered" from="Zona_De_Escucha" to="." method="_on_Zona_De_Escucha_body_entered"]
+[connection signal="body_exited" from="Zona_De_Escucha" to="." method="_on_Zona_De_Escucha_body_exited"]
+[connection signal="body_entered" from="Zona_De_Vision" to="." method="_on_Zona_De_Vision_body_entered"]
+[connection signal="body_exited" from="Zona_De_Vision" to="." method="_on_Zona_De_Vision_body_exited"]
