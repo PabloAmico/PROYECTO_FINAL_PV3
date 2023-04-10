@@ -28,7 +28,6 @@ func _ready():
 	GUI.get_node("Waves").visible = true;
 	positions_spawn = get_node("Positions_Spawn").get_children();
 	position_player = get_tree().get_nodes_in_group("Player")[0].global_position;
-	print(position_player);
 	Instantiate_Enemies();
 	
 	pass 
@@ -38,7 +37,6 @@ func _process(delta):
 	Instantiate_Enemies();
 	for i in enemies.size():
 		if(enemies[i] == null):
-			print("Elimine")
 			enemies.erase(null);
 			pass
 	GUI.get_node("Remaining").text = "Enemigos Restantes: " + String(enemies.size());
@@ -48,7 +46,6 @@ func _process(delta):
 
 func Instantiate_Enemies():
 	if enemies.empty():
-		print("*******************************************************")
 		get_tree().get_nodes_in_group("Player")[0].global_position = position_player;
 		hordes +=1;
 		if hordes < 4:
@@ -60,7 +57,6 @@ func Instantiate_Enemies():
 				enemies.append(enemy);
 				enemy.Level = 2;
 				integer +=1
-				print(enemies.size())
 				
 
 				enemy = enemyPrefab_2.instance();
@@ -69,7 +65,6 @@ func Instantiate_Enemies():
 				enemies.append(enemy);
 				enemy.Level = 2;
 				integer += 1;
-				print(enemies.size())
 			
 		else:
 			get_tree().change_scene("res://Niveles/Escena Victoria.tscn");

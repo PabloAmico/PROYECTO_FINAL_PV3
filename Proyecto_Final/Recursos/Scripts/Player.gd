@@ -343,10 +343,10 @@ func Check_Magazine():
 		Reload()
 
 func Dispersion_Shotgun(var distancia):
-	print(distancia);
+
 	if distancia < 400:
 		
-		return damage_weapons[3] * 4
+		return damage_weapons[3] * 2
 	elif distancia >= 400 && distancia < 750:
 		return damage_weapons[3]
 	elif distancia >= 750 && distancia <= 1000:
